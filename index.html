@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lux Monitor Pro | Real-time Data Visualization</title>
+    <meta name="description"
+        content="Advanced real-time sensor data visualization dashboard for Lux monitoring and CSV logging.">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header class="fade-in">
+            <div class="brand">
+                <h1>Lux Monitor Pro</h1>
+                <p id="current-timestamp">실시간 조도 모니터링 시스템</p>
+            </div>
+            <div class="controls">
+                <button id="connect-serial" class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-3.5-4.5c0-.2.2-.5.5-.5a.5.5 0 0 1 .5.5c0 1.5 1.5 3 3.5 3.5s4 2 4 4.5a8 8 0 0 1-16 0c0-2.5 2-4 4-4.5s3.5-2 3.5-3.5a.5.5 0 0 1 1 0c0 .5-1.5 2.9-3.5 4.5s-3 3.5-3 5.5a7 7 0 0 0 7 7z" />
+                    </svg>
+                    기기 연결
+                </button>
+                <button id="export-csv" class="btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    로컬 저장
+                </button>
+            </div>
+        </header>
+
+        <section class="status-grid fade-in" style="animation-delay: 0.1s">
+            <div class="status-card">
+                <h3>Target Lux</h3>
+                <div class="value" id="stat-target">--</div>
+                <span class="unit">lx</span>
+            </div>
+            <div class="status-card control-card">
+                <h3>Set Target Lux</h3>
+                <div class="control-row">
+                    <input type="range" id="target-slider" min="0" max="3000" value="500" step="10">
+                    <div class="input-with-button">
+                        <input type="number" id="target-input" value="500">
+                        <button id="send-target">SET</button>
+                    </div>
+                </div>
+                <p class="hint">슬라이더나 숫자로 조절 후 SET을 누르세요</p>
+            </div>
+            <div class="status-card">
+                <h3>Current Lux</h3>
+                <div class="value" id="stat-lux" style="color: var(--accent-blue)">--</div>
+                <span class="unit">lx</span>
+            </div>
+            <div class="status-card">
+                <h3>PSM Level</h3>
+                <div class="value" id="stat-psm" style="color: var(--accent-green)">--</div>
+                <span class="unit">level</span>
+            </div>
+            <div class="status-card" id="status-indicator">
+                <h3>System Status</h3>
+                <div class="value" style="font-size: 1.2rem; color: var(--text-secondary)">IDLE</div>
+                <span class="unit" id="uptime">0s active</span>
+            </div>
+        </section>
+
+        <main class="charts-grid">
+            <div class="chart-container full-width fade-in" style="animation-delay: 0.2s">
+                <div class="chart-header">
+                    <h2>Lux Stability (Target vs Raw vs Filtered)</h2>
+                </div>
+                <canvas id="luxChart"></canvas>
+            </div>
+
+            <div class="chart-container fade-in" style="animation-delay: 0.3s">
+                <div class="chart-header">
+                    <h2>Control Output (PSM Level)</h2>
+                </div>
+                <canvas id="psmChart"></canvas>
+            </div>
+
+            <div class="chart-container fade-in" style="animation-delay: 0.4s">
+                <div class="chart-header">
+                    <h2>Correlation Analysis (Lux vs PSM)</h2>
+                </div>
+                <canvas id="correlationChart"></canvas>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
